@@ -247,6 +247,27 @@ export default {
     ],
   },
 
+  showTicketInformation: true,
+  ticketLink: 'https://www.swu.de/privatkunden/produkte-leistungen/mobilitaet/tickets-tarife/',
+
+  // mapping (string, lang) from OTP fare identifiers to human readable form
+  fareMapping: function mapHslFareId(fareId, lang) {
+    const names = {
+      de: {
+        ee: 'Einzelfahrschein',
+      },
+      en: {
+        ee: 'Single Ticket',
+      },
+    };
+    const mappedLang = names[lang] ? lang : 'de';
+    if (fareId && fareId.substring) {
+      const zone = fareId.split(':')[1];
+      return names[mappedLang][zone.toLowerCase()] || '';
+    }
+    return '';
+  },
+
   staticMessages: [
     {
       id: '2',
