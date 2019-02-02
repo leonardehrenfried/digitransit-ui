@@ -262,7 +262,8 @@ export default {
     };
     const mappedLang = names[lang] ? lang : 'de';
     if (fareId && fareId.substring) {
-      const zone = fareId.split(':')[1];
+      const fareSplit = fareId.split(':');
+      const zone = fareSplit[fareSplit.length-1];
       return names[mappedLang][zone.toLowerCase()] || '';
     }
     return '';
