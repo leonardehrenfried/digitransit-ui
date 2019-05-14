@@ -82,7 +82,7 @@ export default {
     primary: '#007ac9',
   },
 
-  sprites: 'svg-sprite.hsl.svg',
+  sprites: 'assets/svg-sprite.hsl.svg',
 
   appBarLink: { name: 'VSH', href: 'https://verschwoerhaus.de' },
 
