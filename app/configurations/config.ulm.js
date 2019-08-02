@@ -1,10 +1,11 @@
+/* eslint-disable prefer-template */
 const CONFIG = 'ulm';
 const API_URL = process.env.API_URL || 'https://api.digitransit.im.verschwoerhaus.de';
 const MAP_URL = process.env.MAP_URL || 'https://maps.wikimedia.org/osm-intl/';
 const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
 const YEAR = 1900 + new Date().getYear();
 
-const GEOCODING_BASE_URL = `https://pelias.locationiq.org/v1`;
+const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `https://pelias.locationiq.org/v1`;
 const LOCATIONIQ_API_KEY = process.env.LOCATIONIQ_API_KEY;
 
 export default {
@@ -13,14 +14,14 @@ export default {
   URL: {
     API_URL,
     OTP: process.env.OTP_URL || `${API_URL}/routing/v1/routers/ulm/`,
-    STOP_MAP: `${API_URL}/map/v1/ulm-stop-map/`,
     MAP_URL,
     MAP: {
       default: MAP_URL,
     },
-
-    PELIAS: `${GEOCODING_BASE_URL}/search?api_key=${LOCATIONIQ_API_KEY}`,
-    PELIAS_REVERSE_GEOCODER: `${GEOCODING_BASE_URL}/reverse?api_key=${LOCATIONIQ_API_KEY}`,
+    STOP_MAP: `${API_URL}/map/v1/ulm-stop-map/`,
+    // CITYBIKE_MAP: `${MAP_URL}/map/v1/finland-citybike-map/`,
+    PELIAS: `${GEOCODING_BASE_URL}/search${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
+    PELIAS_REVERSE_GEOCODER: `${GEOCODING_BASE_URL}/reverse${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
   },
 
   contactName: {
@@ -31,7 +32,7 @@ export default {
   title: 'ulmrouting',
 
   availableLanguages: ['de', 'en'],
-  defaultLanguage: 'en',
+  defaultLanguage: 'de',
 
   timezoneData: 'Europe/Berlin|CET CEST CEMT|-10 -20 -30|01010101010101210101210101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-2aFe0 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 kL0 Nc0 m10 WM0 1ao0 1cp0 dX0 jz0 Dd0 1io0 17c0 1fA0 1a00 1ehA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o 00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|41e5',
 
@@ -308,4 +309,6 @@ export default {
   cityBike: {
     showCityBikes: false,
   },
+
+  // TODO: staticIEMessage
 };
