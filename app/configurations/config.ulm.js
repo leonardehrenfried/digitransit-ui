@@ -44,6 +44,8 @@ export default {
 
   feedIds: ['SWU'],
 
+  GTMid: '',
+
   searchSources: ['oa', 'osm'],
 
   defaultMapCenter: {
