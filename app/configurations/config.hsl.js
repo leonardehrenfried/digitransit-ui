@@ -18,6 +18,7 @@ export default {
     TICKET_SALES_MAP: `${MAP_URL}/map/v1/hsl-ticket-sales-map/`,
     FONT: 'https://cloud.typography.com/6364294/7572592/css/fonts.css',
     STOP_TIMETABLES: `${API_URL}/timetables/v1/hsl/stops/`,
+    CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
   },
 
   contactName: {
@@ -265,7 +266,6 @@ export default {
       ],
     ],
   },
-
   footer: {
     content: [
       { label: `© HSL ${YEAR}` },
@@ -377,14 +377,25 @@ export default {
   },
 
   showTicketInformation: true,
-  ticketLink:
-    'https://www.hsl.fi/liput-ja-hinnat?utm_campaign=omat-palvelut&utm_source=reittiopas&utm_medium=referral&utm_content=nain-ostat-lipun',
+  ticketInformation: {
+    primaryAgencyName: 'HSL',
+    trackingParameters: {
+      'HSL:HSL': {
+        utm_campaign: 'omat-palvelut',
+        utm_content: 'nain-ostat-lipun',
+        utm_medium: 'referral',
+        utm_source: 'reittiopas',
+      },
+    },
+  },
+
   showTicketSelector: true,
 
   staticMessages: [
     {
       id: '2',
       priority: -1,
+      shouldTrigger: true,
       content: {
         fi: [
           {
@@ -468,23 +479,15 @@ export default {
     },
   },
 
-  fares: [
-    'HSL:AB',
-    'HSL:BC',
-    'HSL:CD',
-    'HSL:D',
-    'HSL:ABC',
-    'HSL:BCD',
-    'HSL:ABCD',
-  ],
-
-  // mapping (string, lang) from OTP fare identifiers to human readable form
+  // mapping fareId from OTP fare identifiers to human readable form
   // in the new HSL zone model, just strip off the prefix 'HSL:'
   fareMapping: function mapHslFareId(fareId) {
     return fareId && fareId.substring
       ? fareId.substring(fareId.indexOf(':') + 1)
       : '';
   },
+
+  showTicketPrice: true,
 
   itinerary: {
     showZoneLimits: true,
@@ -529,7 +532,6 @@ export default {
           en: 'https://www.hsl.fi/en/citybikes',
         },
       },
-      /*
       vantaa: {
         icon: 'citybike-secondary',
         name: {
@@ -544,7 +546,6 @@ export default {
           en: 'https://www.hsl.fi/en/citybikes',
         },
       },
-      */
     },
   },
 };

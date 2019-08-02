@@ -31,7 +31,7 @@ export default {
       sv: `${MAP_URL}/map/v1/hsl-map-sv/`,
     },
     STOP_MAP: `${MAP_URL}/map/v1/finland-stop-map/`,
-    CITYBIKE_MAP: `${MAP_URL}/map/v1/hsl-citybike-map/`,
+    CITYBIKE_MAP: `${MAP_URL}/map/v1/finland-citybike-map/`,
     FONT:
       'https://fonts.googleapis.com/css?family=Lato:300,400,900%7CPT+Sans+Narrow:400,700',
     PELIAS: `${process.env.GEOCODING_BASE_URL || GEOCODING_BASE_URL}/search`,
@@ -39,6 +39,7 @@ export default {
       GEOCODING_BASE_URL}/reverse`,
     ROUTE_TIMETABLES: {
       HSL: `${API_URL}/timetables/v1/hsl/routes/`,
+      tampere: 'http://joukkoliikenne.tampere.fi/media/aikataulut/',
     },
   },
 
@@ -313,6 +314,27 @@ export default {
 
   // Ticket information feature toggle
   showTicketInformation: false,
+  ticketInformation: {
+    // This is the name of the primary agency operating in the area.
+    // It is used when a ticket price cannot be shown to the user, indicating
+    // that the primary agency is not responsible for ticketing.
+    /*
+    primaryAgencyName: ...,
+    */
+    // UTM parameters (per agency) that should be appended to the agency's
+    // fareUrl when the fareUrl link is shown in the UI.
+    /*
+    trackingParameters: {
+      "agencyGtfsId": {
+        utm_campaign: ...,
+        utm_content: ...,
+        utm_medium: ...,
+        utm_source: ...,
+      }
+    },
+    */
+  },
+
   useTicketIcons: false,
   showRouteInformation: false,
 
@@ -636,6 +658,81 @@ export default {
 
   staticMessages: [],
 
+  staticIEMessage: [
+    {
+      id: '3',
+      priority: -1,
+      shouldTrigger: true,
+      content: {
+        fi: [
+          {
+            type: 'text',
+            content:
+              'Palvelu ei tue käyttämääsi selainta. Päivitä selainohjelmasi tai lataa uusi selain oheisista linkeistä.\n',
+          },
+          {
+            type: 'a',
+            content: 'Google Chrome',
+            href: 'https://www.google.com/chrome/',
+          },
+          {
+            type: 'a',
+            content: 'Firefox',
+            href: 'https://www.mozilla.org/fi/firefox/new/',
+          },
+          {
+            type: 'a',
+            content: 'Microsoft Edge',
+            href: 'https://www.microsoft.com/en-us/windows/microsoft-edge',
+          },
+        ],
+        en: [
+          {
+            type: 'text',
+            content:
+              'The service does not support the browser you are using. Update your browser or download a new browser using the links below.\n',
+          },
+          {
+            type: 'a',
+            content: 'Google Chrome',
+            href: 'https://www.google.com/chrome/',
+          },
+          {
+            type: 'a',
+            content: 'Firefox',
+            href: 'https://www.mozilla.org/fi/firefox/new/',
+          },
+          {
+            type: 'a',
+            content: 'Microsoft Edge',
+            href: 'https://www.microsoft.com/en-us/windows/microsoft-edge',
+          },
+        ],
+        sv: [
+          {
+            type: 'text',
+            content:
+              'Tjänsten stöder inte den webbläsare som du har i bruk. Uppdatera din webbläsare eller ladda ner en ny webbläsare via nedanstående länk.\n',
+          },
+          {
+            type: 'a',
+            content: 'Google Chrome',
+            href: 'https://www.google.com/chrome/',
+          },
+          {
+            type: 'a',
+            content: 'Firefox',
+            href: 'https://www.mozilla.org/sv-SE/firefox/new/',
+          },
+          {
+            type: 'a',
+            content: 'Microsoft Edge',
+            href: 'https://www.microsoft.com/en-us/windows/microsoft-edge',
+          },
+        ],
+      },
+    },
+  ],
   themeMap: {
     hsl: 'reittiopas',
     turku: '(turku|foli)',
@@ -659,6 +756,8 @@ export default {
   imperialEnabled: false,
   // this flag when true enables imperial measurements  'feet/miles system'
 
+  showAllBusses: false,
+  showVehiclesOnStopPage: false,
   mapLayers: {
     featureMapping: {
       ticketSales: {},

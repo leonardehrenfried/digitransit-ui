@@ -24,7 +24,6 @@ class RoutePatternSelect extends Component {
     route: PropTypes.object,
     onSelectChange: PropTypes.func.isRequired,
     serviceDay: PropTypes.string.isRequired,
-    activeTab: PropTypes.string.isRequired,
     relay: PropTypes.object.isRequired,
     gtfsId: PropTypes.string.isRequired,
   };
@@ -49,47 +48,38 @@ class RoutePatternSelect extends Component {
   };
 
   getOptions = () => {
-    const options =
-      this.props.route.patterns.find(
-        o => o.tripsForDate && o.tripsForDate.length > 0,
-      ) !== undefined ||
-      (this.props.route.patterns.find(
-        o => o.tripsForDate && o.tripsForDate.length > 0,
-      ) === undefined &&
-        this.props.activeTab === 'aikataulu')
-        ? sortBy(this.props.route.patterns, 'code')
-            .filter(
-              o =>
-                this.props.activeTab !== 'aikataulu'
-                  ? o.tripsForDate && o.tripsForDate.length > 0
-                  : o,
-            )
-            .map(pattern => {
-              if (this.props.route.patterns.length > 2) {
-                return (
-                  <option key={pattern.code} value={pattern.code}>
-                    {pattern.stops[0].name} ➔ {pattern.headsign}
-                  </option>
-                );
-              }
-              return (
-                <div
-                  key={pattern.code}
-                  value={pattern.code}
-                  className="route-option-togglable"
-                >
-                  {pattern.stops[0].name} ➔ {pattern.headsign}
-                </div>
-              );
-            })
-        : null;
-    const patternDepartures =
-      options && options.filter(o => o.key === this.props.params.patternId);
-    if (patternDepartures && patternDepartures.length === 0) {
-      this.context.router.replace(
-        `/${PREFIX_ROUTES}/${this.props.gtfsId}/pysakit/${options[0].key}`,
+    const { gtfsId, params, route } = this.props;
+    const { router } = this.context;
+
+    const { patterns } = route;
+
+    if (patterns.length === 0) {
+      return null;
+    }
+
+    const options = sortBy(patterns, 'code').map(pattern => {
+      if (patterns.length === 2) {
+        return (
+          <div
+            key={pattern.code}
+            value={pattern.code}
+            className="route-option-togglable"
+          >
+            {pattern.stops[0].name} ➔ {pattern.headsign}
+          </div>
+        );
+      }
+
+      return (
+        <option key={pattern.code} value={pattern.code}>
+          {pattern.stops[0].name} ➔ {pattern.headsign}
+        </option>
       );
-    } else if (options !== null && this.state.loading === true) {
+    });
+
+    if (options.every(o => o.key !== params.patternId)) {
+      router.replace(`/${PREFIX_ROUTES}/${gtfsId}/pysakit/${options[0].key}`);
+    } else if (options.length > 0 && this.state.loading === true) {
       this.setState({ loading: false });
     }
     return options;
@@ -100,14 +90,7 @@ class RoutePatternSelect extends Component {
     return this.state.loading === true ? (
       <div className={cx('route-pattern-select', this.props.className)} />
     ) : (
-      <div
-        className={cx('route-pattern-select', this.props.className, {
-          hidden:
-            this.props.route.patterns.find(
-              o => o.tripsForDate && o.tripsForDate.length > 0,
-            ) === undefined && this.props.activeTab !== 'aikataulu',
-        })}
-      >
+      <div className={cx('route-pattern-select', this.props.className)}>
         {options && (options.length > 2 || options.length === 1) ? (
           <React.Fragment>
             <Icon img="icon-icon_arrow-dropdown" />
@@ -167,7 +150,6 @@ class RoutePatternSelect extends Component {
 }
 
 const defaultProps = {
-  activeTab: 'pysakit',
   className: 'bp-large',
   serviceDay: '20190306',
   relay: {

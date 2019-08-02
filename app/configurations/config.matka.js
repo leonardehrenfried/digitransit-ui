@@ -38,7 +38,26 @@ export default {
 
   favicon: './app/configurations/images/hsl/icon_favicon-matkafi.svg',
 
-  feedIds: ['MATKA', 'HSL', 'tampere', 'LINKKI', 'lautta', 'OULU'],
+  feedIds: [
+    'MATKA',
+    'HSL',
+    'tampere',
+    'LINKKI',
+    'lautta',
+    'OULU',
+    'MatkahuoltoKainuu',
+    'MatkahuoltoSavo',
+    'MatkahuoltoKanta',
+    'MatkahuoltoKarjala',
+    'MatkahuoltoKeski',
+    'MatkahuoltoKyme',
+    'MatkahuoltoLappi',
+    'MatkahuoltoPohjanmaa',
+    'MatkahuoltoSatakunta',
+    'MatkahuoltoVakka',
+    'MatkahuoltoVantaa',
+    'MatkahuoltoVarsinais',
+  ],
 
   meta: {
     description: APP_DESCRIPTION,
@@ -57,8 +76,7 @@ export default {
       {
         name: 'footer-feedback',
         nameEn: 'Submit feedback',
-        href:
-          'http://www.liikennevirasto.fi/liikennejarjestelma/henkiloliikenne/joukkoliikenteen-palvelut/informaatiopalvelut/liikkujan-infopalvelut/matka.fi-palautesivu',
+        href: 'https://www.traficom.fi/fi/asioi-kanssamme/reittiopas',
         icon: 'icon-icon_speech-bubble',
       },
       {
@@ -103,7 +121,6 @@ export default {
           en: 'https://www.hsl.fi/en/citybikes',
         },
       },
-      /*
       vantaa: {
         icon: 'citybike-secondary',
         name: {
@@ -118,7 +135,34 @@ export default {
           en: 'https://www.hsl.fi/en/citybikes',
         },
       },
-      */
+      turku: {
+        icon: 'citybike',
+        name: {
+          fi: 'Turku',
+          sv: 'Åbo',
+          en: 'Turku',
+        },
+        type: 'citybike',
+        url: {
+          fi: 'https://www.foli.fi/kaupunkipyorat',
+          sv: 'https://www.foli.fi/sv/stadscyklar',
+          en: 'https://www.foli.fi/en/citybikes',
+        },
+      },
+      oulu: {
+        icon: 'citybike',
+        name: {
+          fi: 'Oulu',
+          sv: 'Uleåborg',
+          en: 'Oulu',
+        },
+        type: 'citybike',
+        url: {
+          fi: 'https://kaupunkipyorat.ouka.fi/',
+          sv: 'https://kaupunkipyorat.ouka.fi/home',
+          en: 'https://kaupunkipyorat.ouka.fi/home',
+        },
+      },
     },
   },
 

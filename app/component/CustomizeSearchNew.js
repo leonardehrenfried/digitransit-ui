@@ -81,6 +81,20 @@ class CustomizeSearch extends React.Component {
     const { onToggleClick } = this.props;
     const currentSettings = getCurrentSettings(config, query);
     const isUsingBicycle = currentSettings.modes.includes(StreetMode.Bicycle);
+    let ticketOptions = [];
+    if (config.showTicketSelector && config.availableTickets) {
+      Object.keys(config.availableTickets).forEach(key => {
+        if (config.feedIds.indexOf(key) > -1) {
+          ticketOptions = ticketOptions.concat(
+            Object.keys(config.availableTickets[key]),
+          );
+        }
+      });
+
+      ticketOptions.sort((a, b) => {
+        return a.split('').reverse() > b.split('').reverse() ? 1 : -1;
+      });
+    }
 
     return (
       <div className="customize-search">
@@ -143,7 +157,7 @@ class CustomizeSearch extends React.Component {
               id: 'zones',
               defaultMessage: 'Fare zones',
             })}
-            options={config.fares}
+            options={ticketOptions}
             currentOption={currentSettings.ticketTypes || 'none'}
             updateValue={value =>
               replaceQueryParams(router, { ticketTypes: value })

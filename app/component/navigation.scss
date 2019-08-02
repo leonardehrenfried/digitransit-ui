@@ -92,6 +92,10 @@ $content-background-color: $background-color;
 
 #skip-to-content-link {
   height: 0px;
+
+  @media print {
+    display: none;
+  }
 }
 
 .flex-horizontal {
@@ -345,7 +349,6 @@ section.content {
   display: block;
   @include font-book;
   font-size: $font-size-small;
-  background: $white;
   color: $black;
   text-align: left;
   cursor: pointer;
@@ -369,6 +372,7 @@ section.content {
       }
 
       .message-bar-content,
+      a,
       h2 {
         color: white;
       }
@@ -394,7 +398,13 @@ section.content {
 
   a {
     @include font-medium;
-    padding: 0 4px;
+    padding: 0px 4px;
+  }
+
+  svg.message-bar-link-icon {
+    margin: 0 0 0 $padding-small;
+    position: relative;
+    top: 0.125em;
   }
 }
 

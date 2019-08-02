@@ -64,7 +64,15 @@ class SelectMapLayersDialog extends React.Component {
   };
 
   renderContents = (
-    { citybike, parkAndRide, stop, terminal, ticketSales, geoJson },
+    {
+      citybike,
+      parkAndRide,
+      stop,
+      terminal,
+      ticketSales,
+      geoJson,
+      showAllBusses,
+    },
     config,
     lang,
   ) => {
@@ -73,6 +81,18 @@ class SelectMapLayersDialog extends React.Component {
     const transportModes = config.transportModes || {};
     return (
       <React.Fragment>
+        {config.showAllBusses && (
+          <div className="checkbox-grouping">
+            <Checkbox
+              checked={showAllBusses}
+              defaultMessage="Moving vehicles"
+              labelId="map-layer-vehicles"
+              onChange={e =>
+                this.updateSetting({ showAllBusses: e.target.checked })
+              }
+            />
+          </div>
+        )}
         <div className="checkbox-grouping">
           {isTransportModeEnabled(transportModes.bus) && (
             <React.Fragment>
@@ -186,7 +206,10 @@ class SelectMapLayersDialog extends React.Component {
             <div className="checkbox-grouping">
               {config.geoJson.layers.map(gj => (
                 <Checkbox
-                  checked={geoJson[gj.url] !== false}
+                  checked={
+                    (gj.isOffByDefault && geoJson[gj.url] === true) ||
+                    (!gj.isOffByDefault && geoJson[gj.url] !== false)
+                  }
                   defaultMessage={gj.name[lang]}
                   key={gj.url}
                   onChange={e => {
@@ -214,7 +237,7 @@ class SelectMapLayersDialog extends React.Component {
         contentClassName="select-map-layers-dialog-content"
         header="select-map-layers-header"
         icon="map-layers"
-        id="mapLayerSelector"
+        id="mapLayerSelectorV2"
         isFullscreenOnMobile
         isOpen={isOpen}
         tooltip={tooltip}
@@ -266,6 +289,7 @@ const mapLayersConfigShape = PropTypes.shape({
       sv: PropTypes.string,
     }),
   }),
+  showAllBusses: PropTypes.bool,
 });
 
 SelectMapLayersDialog.propTypes = {
