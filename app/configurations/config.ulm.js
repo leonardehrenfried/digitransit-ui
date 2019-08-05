@@ -8,6 +8,11 @@ const YEAR = 1900 + new Date().getYear();
 const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `https://pelias.locationiq.org/v1`;
 const LOCATIONIQ_API_KEY = process.env.LOCATIONIQ_API_KEY;
 
+const minLat = 48.284106742914524;
+const maxLat = 48.55297816440071;
+const minLon = 9.743499755859375;
+const maxLon = 10.2447509765625;
+
 export default {
   CONFIG,
 
@@ -162,29 +167,20 @@ export default {
 
   //modesWithNoBike: ['BUS', 'TRAM'],
 
-  useSearchPolygon: true,
+  useSearchPolygon: false,
+  searchParams: {
+    'boundary.rect.min_lat': minLat,
+    'boundary.rect.max_lat': maxLat,
+    'boundary.rect.min_lon': minLon,
+    'boundary.rect.max_lon': maxLon,
+  },
 
   areaPolygon: [
-    [
-      9.743499755859375,
-      48.284106742914524
-    ],
-    [
-      9.765472412109375,
-      48.55297816440071
-    ],
-    [
-      10.2447509765625,
-      48.53752248583047
-    ],
-    [
-      10.144500732421873,
-      48.26491251331118
-    ],
-    [
-      9.743499755859375,
-      48.284106742914524
-    ]
+    [minLon, minLat],
+    [minLon, maxLat],
+    [maxLon, maxLat],
+    [maxLon, minLat],
+    [minLon, minLat],
   ],
 
   footer: {
