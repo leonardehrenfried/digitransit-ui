@@ -10,7 +10,7 @@ const APP_PATH = process.env.APP_CONTEXT || '';
 const { SENTRY_DSN } = process.env;
 const PORT = process.env.PORT || 8080;
 const APP_DESCRIPTION = 'Digitransit journey planning UI';
-const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 10000; // 10k is the current server default
+const OTP_TIMEOUT = process.env.OTP_TIMEOUT || 12000;
 const YEAR = 1900 + new Date().getYear();
 const realtime = require('./realtimeUtils').default;
 
@@ -40,6 +40,10 @@ export default {
     ROUTE_TIMETABLES: {
       HSL: `${API_URL}/timetables/v1/hsl/routes/`,
       tampere: 'http://joukkoliikenne.tampere.fi/media/aikataulut/',
+    },
+    STOP_TIMETABLES: {
+      HSL: `${API_URL}/timetables/v1/hsl/stops/`,
+      tampere: 'https://www.tampere.fi/ekstrat/ptdata/pdf/',
     },
   },
 
@@ -741,6 +745,7 @@ export default {
     oulu: 'oulu',
     hameenlinna: 'hameenlinna',
     matka: 'matka',
+    salo: 'salo',
     rovaniemi: 'rovaniemi',
     kouvola: 'kouvola',
     tampere: 'tampere',
@@ -764,5 +769,5 @@ export default {
     },
   },
 
-  routeTimetables: {},
+  timetables: {},
 };
