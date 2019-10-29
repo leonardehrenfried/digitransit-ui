@@ -27,6 +27,7 @@ export default {
     // CITYBIKE_MAP: `${MAP_URL}/map/v1/finland-citybike-map/`,
     PELIAS: `${GEOCODING_BASE_URL}/search${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
     PELIAS_REVERSE_GEOCODER: `${GEOCODING_BASE_URL}/reverse${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
+    CITYBIKE_MAP: `${MAP_URL}/map/v1/citybike-map/`,
   },
 
   contactName: {
@@ -305,7 +306,7 @@ export default {
   },
 
   cityBike: {
-    showCityBikes: false,
+    showCityBikes: true,
   },
 
   // TODO: staticIEMessage
