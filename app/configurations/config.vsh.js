@@ -1,5 +1,5 @@
 /* eslint-disable prefer-template */
-const CONFIG = 'ulm';
+const CONFIG = 'vsh';
 const API_URL = process.env.API_URL || 'https://api.digitransit.im.verschwoerhaus.de';
 const MAP_URL = process.env.MAP_URL || 'https://maps.wikimedia.org/osm-intl/';
 const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
@@ -18,7 +18,7 @@ export default {
 
   URL: {
     API_URL,
-    OTP: process.env.OTP_URL || `${API_URL}/routing/v1/routers/ulm/`,
+    OTP: process.env.OTP_URL || `${API_URL}/routing/v1/routers/vsh/`,
     MAP_URL,
     MAP: {
       default: MAP_URL,
@@ -301,7 +301,7 @@ export default {
   ],
 
   themeMap: {
-    ulm: 'ulm',
+    vsh: 'vsh',
   },
 
   cityBike: {
