@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
 const CONFIG = 'ulm';
-const API_URL = process.env.API_URL || 'https://api.digitransit.ulm.dev';
+const API_URL = process.env.API_URL || 'https://api.digitransit.im.verschwoerhaus.de';
 const MAP_URL = process.env.MAP_URL || 'https://maps.wikimedia.org/osm-intl/';
 const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
 const YEAR = 1900 + new Date().getYear();
@@ -92,7 +92,7 @@ export default {
 
   sprites: 'assets/svg-sprite.hsl.svg',
 
-  appBarLink: { name: 'ulm.dev', href: 'https://ulm.dev' },
+  appBarLink: { name: 'VSH', href: 'https://verschwoerhaus.de' },
 
   agency: {
     show: false,
@@ -185,7 +185,7 @@ export default {
 
   footer: {
     content: [
-      { label: `ulm ❤️ digitransit` },
+      { label: `vsh ❤️ digitransit` },
       {},
       {
         name: 'footer-faq',
@@ -281,7 +281,7 @@ export default {
           {
             type: 'a',
             content: 'Privacy Statement',
-            href: 'https://www.ulm.de/sonderseiten/datenschutzerklaerung',
+            href: 'https://verschwoerhaus.de/en/datenschutzerklaerung/',
           },
         ],
         de: [
@@ -293,7 +293,7 @@ export default {
           {
             type: 'a',
             content: 'Datenschutzerklärung',
-            href: 'https://www.ulm.de/sonderseiten/datenschutzerklaerung',
+            href: 'https://verschwoerhaus.de/datenschutzerklaerung/',
           },
         ],
       },
