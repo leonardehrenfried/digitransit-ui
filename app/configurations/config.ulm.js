@@ -1,7 +1,7 @@
 /* eslint-disable prefer-template */
 const CONFIG = 'ulm';
 const API_URL = process.env.API_URL || 'https://api.digitransit.ulm.dev';
-const MAP_URL = process.env.MAP_URL || 'https://maps.wikimedia.org/osm-intl/';
+const MAP_URL = process.env.MAP_URL || 'https://osm-demo-{s}.wheregroup.com/tiles/1.0.0/osm/webmercator/';
 const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
 const YEAR = 1900 + new Date().getYear();
 
@@ -59,7 +59,7 @@ export default {
   },
 
   map: {
-    useRetinaTiles: true,
+    useRetinaTiles: false,
     tileSize: 256,
     zoomOffset: 0,
   },
