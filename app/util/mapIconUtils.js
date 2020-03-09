@@ -123,8 +123,8 @@ function drawIconImageBadge(
 }
 
 /* eslint-disable no-param-reassign */
-export function drawRoundIcon(tile, geom, type, large, platformNumber) {
-  const scale = large ? 2 : 1;
+export function drawRoundIcon(tile, geom, type, customScale, platformNumber) {
+  const scale = customScale || 1;
   const caseRadius = getCaseRadius(tile.coords.z) * scale;
   const stopRadius = getStopRadius(tile.coords.z) * scale;
   const hubRadius = getHubRadius(tile.coords.z) * scale;
@@ -343,3 +343,10 @@ export function drawAvailabilityValue(
   tile.ctx.textBaseline = 'middle';
   tile.ctx.fillText(value, x, y);
 }
+
+export const getZoneLabelColor = config => {
+  if (typeof config.colors !== 'undefined' && config.colors.primary) {
+    return config.colors.primary;
+  }
+  return '#000';
+};

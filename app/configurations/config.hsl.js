@@ -68,6 +68,7 @@ export default {
   showDisclaimer: true,
 
   stopsMinZoom: 14,
+  mergeStopsByCode: true,
 
   colors: {
     primary: '#007ac9',
@@ -501,22 +502,8 @@ export default {
   useTicketIcons: true,
 
   cityBike: {
-    showCityBikes: true,
+    showCityBikes: false,
     networks: {
-      samocat: {
-        icon: 'scooter',
-        name: {
-          fi: 'Vuosaari',
-          sv: 'Nordsjö',
-          en: 'Vuosaari',
-        },
-        type: 'scooter',
-        url: {
-          fi: 'https://www.hsl.fi/potkulaudat',
-          sv: 'https://www.hsl.fi/sv/stadssparkcyklar',
-          en: 'https://www.hsl.fi/en/cityscooters',
-        },
-      },
       smoove: {
         icon: 'citybike',
         name: {
@@ -547,4 +534,5 @@ export default {
       },
     },
   },
+  showLogin: true,
 };

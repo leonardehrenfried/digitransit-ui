@@ -6,6 +6,7 @@ import Relay from 'react-relay/classic';
 import { routerShape } from 'react-router';
 import getContext from 'recompose/getContext';
 
+import { FormattedMessage } from 'react-intl';
 import ItinerarySummaryListContainer from './ItinerarySummaryListContainer';
 import TimeNavigationButtons from './TimeNavigationButtons';
 import TimeStore from '../store/TimeStore';
@@ -18,6 +19,7 @@ import {
 } from '../util/planParamUtil';
 import { getIntermediatePlaces, replaceQueryParams } from '../util/queryUtils';
 import withBreakpoint from '../util/withBreakpoint';
+import { addAnalyticsEvent } from '../util/analyticsUtils';
 
 class SummaryPlanContainer extends React.Component {
   static propTypes = {
@@ -71,13 +73,18 @@ class SummaryPlanContainer extends React.Component {
         state: { summaryPageSelected: index },
         pathname: getRoutePath(this.props.params.from, this.props.params.to),
       });
+      addAnalyticsEvent({
+        category: 'Itinerary',
+        action: 'HighlightItinerary',
+        name: index,
+      });
     }
   };
 
   onSelectImmediately = index => {
     if (Number(this.props.params.hash) === index) {
       if (this.props.breakpoint === 'large') {
-        window.dataLayer.push({
+        addAnalyticsEvent({
           event: 'sendMatomoEvent',
           category: 'ItinerarySettings',
           action: 'ItineraryDetailsClick',
@@ -91,11 +98,11 @@ class SummaryPlanContainer extends React.Component {
         this.context.router.goBack();
       }
     } else {
-      window.dataLayer.push({
+      addAnalyticsEvent({
         event: 'sendMatomoEvent',
-        category: 'ItinerarySettings',
-        action: 'ItineraryDetailsClick',
-        name: 'ItineraryDetailsExpand',
+        category: 'Itinerary',
+        action: 'OpenItineraryDetails',
+        name: index,
       });
       const newState = {
         ...this.context.location,
@@ -123,11 +130,11 @@ class SummaryPlanContainer extends React.Component {
   };
 
   onLater = () => {
-    window.dataLayer.push({
+    addAnalyticsEvent({
       event: 'sendMatomoEvent',
-      category: 'ItinerarySettings',
-      action: 'ShowMoreRoutesClick',
-      name: 'ShowMoreRoutesLater',
+      category: 'Itinerary',
+      action: 'ShowLaterItineraries',
+      name: null,
     });
 
     const end = moment.unix(this.props.serviceTimeRange.end);
@@ -206,11 +213,11 @@ class SummaryPlanContainer extends React.Component {
   };
 
   onEarlier = () => {
-    window.dataLayer.push({
+    addAnalyticsEvent({
       event: 'sendMatomoEvent',
-      category: 'ItinerarySettings',
-      action: 'ShowMoreRoutesClick',
-      name: 'ShowMoreRoutesEarlier',
+      category: 'Itinerary',
+      action: 'ShowEarlierItineraries',
+      name: null,
     });
 
     const start = moment.unix(this.props.serviceTimeRange.start);
@@ -301,11 +308,11 @@ class SummaryPlanContainer extends React.Component {
   };
 
   onNow = () => {
-    window.dataLayer.push({
+    addAnalyticsEvent({
       event: 'sendMatomoEvent',
-      category: 'ItinerarySettings',
-      action: 'ShowMoreRoutesClick',
-      name: 'ShowMoreRoutesNow',
+      category: 'Itinerary',
+      action: 'ResetJourneyStartTime',
+      name: null,
     });
 
     replaceQueryParams(this.context.router, {
@@ -352,6 +359,7 @@ class SummaryPlanContainer extends React.Component {
       $itineraryFiltering: Float!,
       $modeWeight: InputModeWeight!,
       $allowedBikeRentalNetworks: [String]!,
+      $locale: String!,
     ) { viewer {
         plan(
           fromPlace:$fromPlace,
@@ -390,6 +398,7 @@ class SummaryPlanContainer extends React.Component {
           itineraryFiltering: $itineraryFiltering,
           modeWeight: $modeWeight,
           allowedBikeRentalNetworks: $allowedBikeRentalNetworks,
+          locale: $locale,
         ) {itineraries {startTime,endTime}}
       }
     }`;
@@ -407,7 +416,13 @@ class SummaryPlanContainer extends React.Component {
     const disableButtons = !itineraries || itineraries.length === 0;
 
     return (
-      <div className="summary">
+      <div className="summary" aria-live="polite" aria-atomic="true">
+        <h2 className="sr-only">
+          <FormattedMessage
+            id="itinerary-summary-page.description"
+            defaultMessage="Route suggestions"
+          />
+        </h2>
         <ItinerarySummaryListContainer
           activeIndex={activeIndex}
           currentTime={currentTime}

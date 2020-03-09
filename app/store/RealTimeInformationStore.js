@@ -6,9 +6,34 @@ class RealTimeInformationStore extends Store {
   constructor(dispatcher) {
     super(dispatcher);
     this.vehicles = {};
+    this.allowUpdates = true;
+  }
+
+  checkEmit() {
+    if (this.pendingEmit) {
+      this.pendingEmit = false;
+      this.emitChange();
+    }
+  }
+
+  conditionalEmit() {
+    if (this.allowUpdates) {
+      setTimeout(() => {
+        this.allowUpdates = true;
+        this.checkEmit();
+      }, 1000);
+      this.allowUpdates = false;
+      this.pendingEmit = false;
+      this.emitChange();
+    } else {
+      this.pendingEmit = true;
+    }
   }
 
   storeClient(data) {
+    if (this.client) {
+      this.client.end();
+    }
     this.client = data.client;
     this.topics = data.topics;
   }
@@ -34,7 +59,7 @@ class RealTimeInformationStore extends Store {
       } else {
         this.vehicles[message.id] = message;
       }
-      this.emitChange();
+      this.conditionalEmit();
     }
   }
 

@@ -24,7 +24,8 @@ import ComponentUsageExample from './ComponentUsageExample';
 
 import exampleData from './data/ItineraryTab.exampleData.json';
 import { getFares } from '../util/fareUtils';
-
+import { addAnalyticsEvent } from '../util/analyticsUtils';
+/* eslint-disable prettier/prettier */
 class ItineraryTab extends React.Component {
   static propTypes = {
     searchTime: PropTypes.number.isRequired,
@@ -61,11 +62,11 @@ class ItineraryTab extends React.Component {
   printItinerary = e => {
     e.stopPropagation();
 
-    window.dataLayer.push({
+    addAnalyticsEvent({
       event: 'sendMatomoEvent',
-      category: 'ItinerarySettings',
-      action: 'ItineraryPrintButton',
-      name: 'PrintItinerary',
+      category: 'Itinerary',
+      action: 'Print',
+      name: null,
     });
 
     const printPath = `${this.props.location.pathname}/tulosta`;
@@ -80,7 +81,6 @@ class ItineraryTab extends React.Component {
     const { config } = this.context;
 
     const fares = getFares(itinerary.fares, getRoutes(itinerary.legs), config);
-
     return (
       <div className="itinerary-tab">
         <BreakpointConsumer>
@@ -105,6 +105,7 @@ class ItineraryTab extends React.Component {
                   'bp-large': breakpoint === 'large',
                 })}
               >
+
                 {config.showTicketInformation &&
                   fares.some(fare => fare.isUnknown) && (
                     <div className="disclaimer-container unknown-fare-disclaimer__top">
@@ -137,6 +138,7 @@ class ItineraryTab extends React.Component {
                   <TicketInformation
                     fares={fares}
                     zones={getZones(itinerary.legs)}
+                    legs={itinerary.legs}
                   />
                 )}
                 {config.showRouteInformation && <RouteInformation />}

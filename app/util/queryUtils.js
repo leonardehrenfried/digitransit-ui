@@ -7,6 +7,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { otpToLocation } from './otpStrings';
 import { OptimizeType } from '../constants';
 import { getCustomizedSettings } from '../store/localStorage';
+import { addAnalyticsEvent } from './analyticsUtils';
 
 /**
  * Removes selected itinerary index from url (pathname) and
@@ -54,6 +55,23 @@ export const clearQueryParams = (router, paramsToClear = []) => {
 };
 
 /**
+ * Processes query so that empty arrays will be preserved in URL
+ *
+ * @param {*} query The location query params to fix
+ */
+
+export const fixArrayParams = query => {
+  const fixedQuery = { ...query };
+
+  Object.keys(query).forEach(key => {
+    if (Array.isArray(query[key]) && !query[key].length) {
+      fixedQuery[key] = '';
+    }
+  });
+  return fixedQuery;
+};
+
+/**
  * Updates the browser's url with the given parameters.
  *
  * @param {*} router The router
@@ -70,10 +88,11 @@ export const replaceQueryParams = (router, newParams) => {
     location.query.optimize === OptimizeType.Triangle;
   const triangleFactors = ['safetyFactor', 'slopeFactor', 'timeFactor'];
 
-  const query = {
+  const query = fixArrayParams({
     ...location.query,
     ...newParams,
-  };
+  });
+
   router.replace({
     ...location,
     query: removeTriangleFactors ? omit(query, triangleFactors) : query,
@@ -170,6 +189,12 @@ const addRoute = (router, routeToAdd, preferred) => {
   routes.push(routeToAdd);
   replaceQueryParams(router, {
     [`${preferred ? 'preferred' : 'unpreferred'}Routes`]: routes.join(','),
+  });
+  const action = preferred ? 'PreferRoute' : 'AvoidRoute';
+  addAnalyticsEvent({
+    action,
+    category: 'ItinerarySettings',
+    name: routeToAdd,
   });
 };
 
@@ -364,6 +389,11 @@ export const setPreferGreenways = (
   } else {
     replaceQueryParams(router, { optimize: OptimizeType.Greenways });
   }
+  addAnalyticsEvent({
+    action: 'EnablePreferCycleways',
+    category: 'ItinerarySettings',
+    name: null,
+  });
 };
 
 /**
@@ -391,6 +421,11 @@ export const setAvoidElevationChanges = (
     slopeFactor: bothEnabled ? TWO_FACTORS_ENABLED : ONE_FACTOR_ENABLED,
     timeFactor: FACTOR_DISABLED,
   });
+  addAnalyticsEvent({
+    action: 'EnableAvoidChangesInElevation',
+    category: 'ItinerarySettings',
+    name: null,
+  });
 };
 
 /**
@@ -417,6 +452,11 @@ export const resetPreferGreenways = (
       optimize: defaultOptimize,
     });
   }
+  addAnalyticsEvent({
+    action: 'DisablePreferCycleways',
+    category: 'ItinerarySettings',
+    name: null,
+  });
 };
 
 /**
@@ -443,4 +483,9 @@ export const resetAvoidElevationChanges = (
       optimize: defaultOptimize,
     });
   }
+  addAnalyticsEvent({
+    action: 'DisableAvoidChangesInElevation',
+    category: 'ItinerarySettings',
+    name: null,
+  });
 };

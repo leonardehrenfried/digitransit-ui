@@ -14,6 +14,7 @@ import ComponentUsageExample from './ComponentUsageExample';
 import NoFavouriteLocations from './NoFavouriteLocations';
 import { dtLocationShape } from '../util/shapes';
 import { isMobile } from '../util/browser';
+import { addAnalyticsEvent } from '../util/analyticsUtils';
 
 class FavouriteLocationContainerRoute extends Relay.Route {
   static queries = {
@@ -102,13 +103,19 @@ export default class FavouriteLocationsContainer extends React.Component {
     });
   };
 
-  setDestination = (locationName, lat, lon) => {
+  setDestination = (name, lat, lon) => {
     const location = {
       lat,
       lon,
-      address: locationName,
+      address: name,
       ready: true,
     };
+
+    addAnalyticsEvent({
+      action: 'EditJourneyEndPoint',
+      category: 'ItinerarySettings',
+      name: 'FavouritePanel',
+    });
 
     navigateTo({
       origin: this.props.origin,

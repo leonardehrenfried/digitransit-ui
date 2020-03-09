@@ -10,12 +10,20 @@ import LangSelect from './LangSelect';
 import MessageBar from './MessageBar';
 import CanceledLegsBar from './CanceledLegsBar';
 import LogoSmall from './LogoSmall';
+import { addAnalyticsEvent } from '../util/analyticsUtils';
+import LoginButton from './LoginButton';
+import UserInfo from './UserInfo';
 
 const AppBarLarge = (
-  { titleClicked, logo },
+  { titleClicked, logo, user },
   { router, location, config, intl },
 ) => {
   const openDisruptionInfo = () => {
+    addAnalyticsEvent({
+      category: 'Navigation',
+      action: 'OpenDisruptions',
+      name: null,
+    });
     router.push({
       ...location,
       state: {
@@ -40,10 +48,36 @@ const AppBarLarge = (
   return (
     <div>
       <div className="top-bar bp-large flex-horizontal">
-        <button className="noborder" onClick={titleClicked}>
+        <button
+          className="noborder"
+          onClick={e => {
+            titleClicked(e);
+            addAnalyticsEvent({
+              category: 'Navigation',
+              action: 'Home',
+              name: null,
+            });
+          }}
+        >
           {logoElement}
         </button>
         <div className="empty-space flex-grow" />
+        {config.showLogin &&
+          (!user.name ? (
+            <LoginButton />
+          ) : (
+            <UserInfo
+              user={user}
+              list={[
+                {
+                  key: 'dropdown-item-1',
+                  messageId: 'logout',
+                  href: '/logout',
+                },
+              ]}
+            />
+          ))}
+
         <div className="navi-languages right-border navi-margin">
           <LangSelect />
         </div>
@@ -60,7 +94,17 @@ const AppBarLarge = (
           </a>
         </div>
         <div className="padding-horizontal-large navi-margin">
-          <ExternalLink className="external-top-bar" {...config.appBarLink} />
+          <ExternalLink
+            className="external-top-bar"
+            {...config.appBarLink}
+            onClick={() => {
+              addAnalyticsEvent({
+                category: 'Navigation',
+                action: 'OpenServiceHomeLink',
+                name: null,
+              });
+            }}
+          />
         </div>
       </div>
       <MessageBar />
@@ -73,6 +117,7 @@ const AppBarLarge = (
 AppBarLarge.propTypes = {
   titleClicked: PropTypes.func.isRequired,
   logo: PropTypes.string,
+  user: PropTypes.object,
 };
 
 AppBarLarge.defaultProps = {
@@ -97,4 +142,4 @@ AppBarLarge.description = () => (
   </div>
 );
 
-export default AppBarLarge;
+export { AppBarLarge as default, AppBarLarge as Component };
