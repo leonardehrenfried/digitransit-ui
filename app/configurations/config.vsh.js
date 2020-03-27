@@ -5,8 +5,7 @@ const MAP_URL = process.env.MAP_URL || 'https://osm-demo-{s}.wheregroup.com/tile
 const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
 const YEAR = 1900 + new Date().getYear();
 
-const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `https://pelias.locationiq.org/v1`;
-const LOCATIONIQ_API_KEY = process.env.LOCATIONIQ_API_KEY;
+const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `${API_URL}/geocoding/v1`;
 
 const minLat = 48.284106742914524;
 const maxLat = 48.55297816440071;
@@ -25,8 +24,8 @@ export default {
     },
     STOP_MAP: `${API_URL}/map/v1/stop-map/`,
     // CITYBIKE_MAP: `${MAP_URL}/map/v1/finland-citybike-map/`,
-    PELIAS: `${GEOCODING_BASE_URL}/search${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
-    PELIAS_REVERSE_GEOCODER: `${GEOCODING_BASE_URL}/reverse${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
+    PELIAS: `${GEOCODING_BASE_URL}/search`,
+    PELIAS_REVERSE_GEOCODER: `${GEOCODING_BASE_URL}/reverse`,
     CITYBIKE_MAP: `${API_URL}/map/v1/citybike-map/`,
   },
 
