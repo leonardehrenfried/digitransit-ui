@@ -1,7 +1,7 @@
 /* eslint-disable prefer-template */
 const CONFIG = 'vsh';
 const API_URL = process.env.API_URL || 'https://api.digitransit.im.verschwoerhaus.de';
-const MAP_URL = process.env.MAP_URL || 'https://maps.wikimedia.org/osm-intl/';
+const MAP_URL = process.env.MAP_URL || 'https://osm-demo-{s}.wheregroup.com/tiles/1.0.0/osm/webmercator/';
 const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
 const YEAR = 1900 + new Date().getYear();
 
@@ -48,7 +48,7 @@ export default {
   textLogo: true,
   //logo: 'default/digitransit-logo.png',
 
-  feedIds: ['SWU'],
+  feedIds: ['DING', 'FLIX', 'SPNV'],
 
   GTMid: '',
 
@@ -60,7 +60,7 @@ export default {
   },
 
   map: {
-    useRetinaTiles: true,
+    useRetinaTiles: false,
     tileSize: 256,
     zoomOffset: 0,
   },
