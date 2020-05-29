@@ -135,6 +135,11 @@ export default {
       availableForSelection: false,
       defaultValue: false,
     },
+    
+    citybike: {
+      availableForSelection: true,
+      defaultValue: true,
+    },
   },
 
   streetModes: {
