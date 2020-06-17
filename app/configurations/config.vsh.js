@@ -311,7 +311,21 @@ export default {
 
   cityBike: {
     showCityBikes: true,
-    networks: {}
+    networks: {
+      openbike: {
+        icon: 'citybike',
+        name: {
+          de: 'OpenBike',
+          en: 'OpenBike',
+        },
+        type: 'citybike',
+        url: {
+          de: 'https://openbike.ulm.dev',
+          en: 'https://openbike.ulm.dev'
+        }
+      }
+    }
+    
   },
 
   // TODO: staticIEMessage
