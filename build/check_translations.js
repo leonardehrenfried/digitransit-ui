@@ -6,27 +6,23 @@ const lang2 = process.env.LANG_TO || process.argv[3] || 'nb';
 console.log("Comparing translations between " + lang1 + " and " + lang2);
 
 const UI_PATH = process.env.UI_PATH || '.';
-const FILE = UI_PATH + '/app/translations.js';
+const TRANSLATION_PATH = UI_PATH + '/app/translations/';
 
-console.log("Using path: " + UI_PATH + " to file: " + FILE);
+console.log("Using path: " + TRANSLATION_PATH);
 
 fs = require('fs');
-const file = fs.readFileSync(FILE, 'utf8');
-const start = file.indexOf("const translations = {") + 21;
-const end = file.lastIndexOf("};") + 1;
 
-const translations = eval('(' + file.substring(start, end) + ')');
-
-const lang_from = translations[lang1];
-const lang_to = translations[lang2];
-if (!lang_from) {
+if (!fs.existsSync(TRANSLATION_PATH + lang1 + '.json')) {
   console.log(lang1 + ' does not exist in translations');
   process.exit();
 }
-if (!lang_to) {
+if (!fs.existsSync(TRANSLATION_PATH + lang2 + '.json')) {
   console.log(lang2 + ' does not exist in translations');
   process.exit();
 }
+
+const lang_from = JSON.parse(fs.readFileSync(TRANSLATION_PATH + lang1 + '.json', 'utf8'));
+const lang_to = JSON.parse(fs.readFileSync(TRANSLATION_PATH + lang2 + '.json', 'utf8'));
 
 const keys_from = Object.keys(lang_from).sort();
 const keys_to = Object.keys(lang_to).sort();
