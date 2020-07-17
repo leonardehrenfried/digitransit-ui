@@ -2,11 +2,8 @@
 const CONFIG = 'ulm';
 const API_URL = process.env.API_URL || 'https://api.digitransit.ulm.dev';
 const MAP_URL = process.env.MAP_URL || 'https://osm-demo-{s}.wheregroup.com/tiles/1.0.0/osm/webmercator/';
-const APP_DESCRIPTION = 'GTFS-basierte Auskunft für Ulm, basierend auf digitransit';
+const APP_DESCRIPTION = 'Intermodale Auskunft für Ulm, basierend auf digitransit. Gefördert duch das EU Interreg Central Europe Projekt SHAREPLACE.';
 const YEAR = 1900 + new Date().getYear();
-
-const GEOCODING_BASE_URL = process.env.GEOCODING_BASE_URL || `https://pelias.locationiq.org/v1`;
-const LOCATIONIQ_API_KEY = process.env.LOCATIONIQ_API_KEY;
 
 const minLat = 48.284106742914524;
 const maxLat = 48.55297816440071;
@@ -24,14 +21,12 @@ export default {
       default: MAP_URL,
     },
     STOP_MAP: `${API_URL}/map/v1/stop-map/`,
-    // CITYBIKE_MAP: `${MAP_URL}/map/v1/finland-citybike-map/`,
-    PELIAS: `${GEOCODING_BASE_URL}/search${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
-    PELIAS_REVERSE_GEOCODER: `${GEOCODING_BASE_URL}/reverse${LOCATIONIQ_API_KEY ? '?api_key=' + LOCATIONIQ_API_KEY : ''}`,
+    CITYBIKE_MAP: `${API_URL}/map/v1/citybike-map/`,
   },
 
   contactName: {
-    de: 'VSH',
-    default: 'VSH',
+    de: 'ulm.dev',
+    default: 'ulm.dev',
   },
 
   title: 'ulmrouting',
@@ -110,7 +105,7 @@ export default {
 
     twitter: {
       card: 'summary',
-      site: '@verschwoerhaus',
+      site: '@ulm_donau',
     },
   },
 
