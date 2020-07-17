@@ -13,11 +13,6 @@ import {
 } from './localStorage';
 import { isStop } from '../util/suggestionUtils';
 import { getGeocodingResult } from '../util/searchUtils';
-import {
-  getFavourites,
-  updateFavourites,
-  deleteFavourites,
-} from '../util/apiUtils';
 
 export default class FavouriteStore extends Store {
   static storeName = 'FavouriteStore';
@@ -29,16 +24,6 @@ export default class FavouriteStore extends Store {
   constructor(dispatcher) {
     super(dispatcher);
     this.config = dispatcher.getContext().config;
-
-    getFavourites()
-      .then(res => {
-        this.favourites = res;
-        this.emitChange();
-      })
-      .catch(() => {
-        this.favourites = getFavouriteStorage();
-        this.emitChange();
-      });
     this.migrateRoutes();
     this.migrateStops();
     this.migrateLocations();
@@ -46,7 +31,7 @@ export default class FavouriteStore extends Store {
 
   isFavourite(id) {
     const ids = this.favourites.map(
-      favourite => favourite.gtfsId || favourite.id,
+      favourite => favourite.gtfsId || favourite.gid,
     );
     return includes(ids, id);
   }
@@ -72,13 +57,21 @@ export default class FavouriteStore extends Store {
 
   getRoutes() {
     return this.favourites
-      .filter(favourite => favourite.type === 'route')
+      .filter(
+        favourite =>
+          favourite.type === 'route' &&
+          favourite.gtfsId &&
+          favourite.gtfsId.includes(':'),
+      )
       .map(favourite => favourite.gtfsId);
   }
 
   getStopsAndStations() {
     return this.favourites.filter(
-      favourite => favourite.type === 'stop' || favourite.type === 'station',
+      favourite =>
+        favourite.gtfsId &&
+        favourite.gtfsId.includes(':') &&
+        (favourite.type === 'stop' || favourite.type === 'station'),
     );
   }
 
@@ -106,14 +99,8 @@ export default class FavouriteStore extends Store {
       });
     }
     this.favourites = newFavourites;
-    updateFavourites(this.favourites)
-      .then(() => {
-        this.emitChange();
-      })
-      .catch(() => {
-        this.storeFavourites();
-        this.emitChange();
-      });
+    this.storeFavourites();
+    this.emitChange();
   }
 
   deleteFavourite(data) {
@@ -121,14 +108,8 @@ export default class FavouriteStore extends Store {
       favourite => favourite.favouriteId !== data.favouriteId,
     );
     this.favourites = newFavourites;
-    deleteFavourites([data.favouriteId])
-      .then(() => {
-        this.emitChange();
-      })
-      .catch(() => {
-        this.storeFavourites();
-        this.emitChange();
-      });
+    this.storeFavourites();
+    this.emitChange();
   }
 
   migrateRoutes() {

@@ -52,6 +52,7 @@ $item-border-color: #eee;
 
   .autosuggest-input-icon {
     margin-top: 0.75em;
+    z-index: index($zindex, search-input-icon)
   }
 
   button.clear-input {
@@ -389,7 +390,6 @@ div.map {
 
   .react-autosuggest__container {
     width: 100%;
-    display: flex;
 
     .react-autosuggest__suggestions-container--open {
       background: #fff;
@@ -510,10 +510,7 @@ div.map {
 
 .isItinerary {
   .autosuggest-input-icon {
-    &.origin,
-    &.destination {
-      z-index: 1;
-    }
+    z-index: index($zindex, search-input-icon)
   }
 }
 
@@ -681,6 +678,10 @@ input.react-autosuggest__input {
   }
 }
 
+.react-autosuggest__container {
+  display: flex;
+}
+
 .react-autosuggest__container--open .react-autosuggest__input {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -695,9 +696,10 @@ input.react-autosuggest__input {
   transition: border 0s;
   &:focus {
     box-shadow: none;
-    outline: none;
+    @include default-focus-outline;
     border: none;
     background: $white;
+    z-index: index($zindex, search-input-focus);
   }
 }
 
@@ -727,6 +729,7 @@ button.clear-input {
   }
   &:focus {
     background-color: $white;
+    @include default-focus-outline;
   }
 }
 

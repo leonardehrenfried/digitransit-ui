@@ -5,7 +5,7 @@ const CONFIG = 'lappeenranta';
 const APP_TITLE = 'reittiopas.lappeenranta.fi';
 const APP_DESCRIPTION = '';
 
-const walttiConfig = require('./waltti').default;
+const walttiConfig = require('./config.waltti').default;
 
 export default configMerger(walttiConfig, {
   CONFIG,
@@ -13,7 +13,7 @@ export default configMerger(walttiConfig, {
   appBarLink: { name: 'Lappeenranta', href: 'http://www.lappeenranta.fi/' },
 
   colors: {
-    primary: '#7AB92A',
+    primary: '#ea4097',
   },
 
   socialMedia: {
@@ -23,7 +23,9 @@ export default configMerger(walttiConfig, {
 
   title: APP_TITLE,
 
-  textLogo: true, // title text instead of logo img
+  textLogo: false, // title text instead of logo img
+
+  logo: 'lappeenranta/logo.png',
 
   favicon: './app/configurations/images/lappeenranta/bussi_fin.jpeg',
 

@@ -5,7 +5,7 @@ const CONFIG = 'jyvaskyla';
 const APP_TITLE = 'Reittiopas Jyväskylä';
 const APP_DESCRIPTION = 'Jyväskylän uusi reittiopas';
 
-const walttiConfig = require('./waltti').default;
+const walttiConfig = require('./config.waltti').default;
 
 const minLat = 61.835318;
 const maxLat = 62.603473;
@@ -141,5 +141,35 @@ export default configMerger(walttiConfig, {
         ],
       },
     ],
+  },
+
+  geoJson: {
+    layers: [
+      {
+        name: {
+          fi: 'Vyöhykkeet',
+          sv: 'Zoner',
+          en: 'Zones',
+        },
+        url: '/assets/geojson/jkl_zone_lines_20200401.geojson',
+      },
+    ],
+  },
+
+  zoneIdMapping: {
+    1: 'A',
+    2: 'B',
+    3: 'C',
+    4: 'D',
+  },
+  itinerary: {
+    showZoneLimits: true,
+  },
+
+  stopCard: {
+    header: {
+      showZone: true,
+      virtualMonitorBaseUrl: 'https://pysakit.jyvaskyla.fi/stop/',
+    },
   },
 });

@@ -7,7 +7,7 @@ import ComponentUsageExample from './ComponentUsageExample';
 import Icon from './Icon';
 import ServiceAlertIcon from './ServiceAlertIcon';
 import ZoneIcon from './ZoneIcon';
-import { getZoneLabelColor } from '../util/mapIconUtils';
+import { getZoneLabelColor, getZoneLabel } from '../util/mapIconUtils';
 import { getActiveAlertSeverityLevel } from '../util/alertUtils';
 import ExternalLink from './ExternalLink';
 
@@ -30,12 +30,12 @@ class StopCardHeader extends React.Component {
     return description;
   }
 
-  getExternalLink(code, isPopUp) {
+  getExternalLink(gtfsId, isPopUp) {
     // Check for popup from stopMarkerPopup, should the external link be visible
-    if (!code || isPopUp || !this.headerConfig.virtualMonitorBaseUrl) {
+    if (!gtfsId || isPopUp || !this.headerConfig.virtualMonitorBaseUrl) {
       return null;
     }
-    const url = `${this.headerConfig.virtualMonitorBaseUrl}${code}`;
+    const url = `${this.headerConfig.virtualMonitorBaseUrl}${gtfsId}`;
     return (
       <ExternalLink className="external-stop-link" href={url}>
         {' '}
@@ -47,13 +47,6 @@ class StopCardHeader extends React.Component {
         }{' '}
       </ExternalLink>
     );
-  }
-
-  getZoneLabel(zoneId) {
-    if (this.context.config.zoneIdMapping) {
-      return this.context.config.zoneIdMapping[zoneId];
-    }
-    return zoneId;
   }
 
   getZoneLabelSize(zoneId) {
@@ -95,14 +88,14 @@ class StopCardHeader extends React.Component {
         name={stop.name}
         description={this.getDescription()}
         code={this.headerConfig.showStopCode && stop.code ? stop.code : null}
-        externalLink={this.getExternalLink(stop.code, isPopUp)}
+        externalLink={this.getExternalLink(stop.gtfsId, isPopUp)}
         icons={icons}
       >
         {this.headerConfig.showZone &&
           stop.zoneId && (
             <ZoneIcon
               showTitle
-              zoneId={this.getZoneLabel(stop.zoneId)}
+              zoneId={getZoneLabel(stop.zoneId, this.context.config)}
               zoneIdFontSize={
                 this.getZoneLabelSize(stop.zoneId)
                   ? this.getZoneLabelSize(stop.zoneId)

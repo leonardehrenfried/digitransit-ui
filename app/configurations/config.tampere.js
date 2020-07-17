@@ -5,7 +5,7 @@ const CONFIG = 'tampere';
 const APP_TITLE = 'Nyssen reittiopas';
 const APP_DESCRIPTION = 'Nyssen reittiopas';
 
-const walttiConfig = require('./waltti').default;
+const walttiConfig = require('./config.waltti').default;
 const tampereTimetables = require('./timetableConfigUtils').default.tampere;
 
 const minLat = 61.16;
@@ -36,7 +36,7 @@ export default configMerger(walttiConfig, {
 
   favicon: './sass/themes/tampere/favicon.png',
 
-  feedIds: ['tampere', 'TampereVR'],
+  feedIds: ['tampere', 'TampereVR', 'tampereDRT'],
 
   geoJson: {
     layers: [
@@ -75,7 +75,7 @@ export default configMerger(walttiConfig, {
   stopCard: {
     header: {
       showZone: true,
-      virtualMonitorBaseUrl: 'https://tremonitori.digitransit.fi/stop/tampere:',
+      virtualMonitorBaseUrl: 'https://tremonitori.digitransit.fi/stop/',
     },
   },
   showTicketInformation: true,
@@ -155,6 +155,42 @@ export default configMerger(walttiConfig, {
       },
     ],
   },
+
+  staticMessages: [
+    {
+      id: '4',
+      priority: -1,
+      shouldTrigger: true,
+      persistence: 'repeat',
+      content: {
+        fi: [
+          {
+            type: 'a',
+            content:
+              'Tutustu turvallisen matkustamisen ohjeisiin koronaviruksen aikana tästä linkistä',
+            href:
+              'https://joukkoliikenne.tampere.fi/aikataulut-ja-reitit/poikkeusinfo/liikennetiedotteet/korona-viruksen-vaikutukset-nysse-liikenteeseen.html',
+          },
+        ],
+        en: [
+          {
+            type: 'a',
+            content: 'Please check instructions for safe travelling here',
+            href:
+              'https://joukkoliikenne.tampere.fi/aikataulut-ja-reitit/poikkeusinfo/liikennetiedotteet/korona-viruksen-vaikutukset-nysse-liikenteeseen.html',
+          },
+        ],
+        sv: [
+          {
+            type: 'a',
+            content: 'Please check instructions for safe travelling here',
+            href:
+              'https://joukkoliikenne.tampere.fi/aikataulut-ja-reitit/poikkeusinfo/liikennetiedotteet/korona-viruksen-vaikutukset-nysse-liikenteeseen.html',
+          },
+        ],
+      },
+    },
+  ],
 
   aboutThisService: {
     fi: [

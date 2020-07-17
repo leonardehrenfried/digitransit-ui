@@ -16,9 +16,12 @@ import {
   stoptimeHasCancelation,
 } from '../util/alertUtils';
 import { isCallAgencyDeparture } from '../util/legUtils';
-import { PREFIX_ROUTES } from '../util/path';
+import { PREFIX_ROUTES, PREFIX_STOPS } from '../util/path';
 
-const DepartureRow = ({ departure, currentTime, distance }, context) => {
+const DepartureRow = (
+  { departure, currentTime, distance, displayNextDeparture },
+  context,
+) => {
   let departureTimes;
   let stopAlerts = [];
   let headsign;
@@ -53,20 +56,26 @@ const DepartureRow = ({ departure, currentTime, distance }, context) => {
   // DT-3331: added query string sort=no
   const departureLinkUrl = `/${PREFIX_ROUTES}/${
     departure.pattern.route.gtfsId
-  }/pysakit/${departure.pattern.code}?sort=no`;
+  }/${PREFIX_STOPS}/${departure.pattern.code}?sort=no`;
 
+  // In case displayNextDeparture is false, only show one departure.
   // In case there's only one departure for the route,
   // add a dummy cell to keep the table layout from breaking
-  const departureTimesChecked =
-    departureTimes.length < 2
-      ? [
+  const departureTimesChecked = () => {
+    if (displayNextDeparture) {
+      if (departureTimes.length < 2) {
+        return [
           departureTimes[0],
           <td
             key={`${departureTimes[0].key}-empty`}
             className="td-departure-times"
           />,
-        ]
-      : departureTimes;
+        ];
+      }
+      return departureTimes;
+    }
+    return [departureTimes[0]];
+  };
 
   const hasActiveAlert = isAlertActive(
     departure.stoptimes.filter(stoptimeHasCancelation),
@@ -105,7 +114,7 @@ const DepartureRow = ({ departure, currentTime, distance }, context) => {
           }
         />
       </td>
-      {departureTimesChecked}
+      {departureTimesChecked()}
     </tr>
   );
 };
@@ -116,6 +125,11 @@ DepartureRow.propTypes = {
   departure: PropTypes.object.isRequired,
   distance: PropTypes.number.isRequired,
   currentTime: PropTypes.number.isRequired,
+  displayNextDeparture: PropTypes.bool,
+};
+
+DepartureRow.defaultProps = {
+  displayNextDeparture: true,
 };
 
 DepartureRow.contextTypes = {
@@ -127,7 +141,7 @@ const exampleDeparture1 = {
     code: '28',
     headSign: 'Tampere',
     route: {
-      gtfsId: '123',
+      gtfsId: 'FOO:123',
       mode: 'RAIL',
       shortName: 'IC28',
     },
@@ -151,7 +165,7 @@ const exampleDeparture2 = {
     code: '154',
     headSign: 'Kamppi',
     route: {
-      gtfsId: '123',
+      gtfsId: 'HSL:123',
       mode: 'BUS',
       shortName: '154',
     },

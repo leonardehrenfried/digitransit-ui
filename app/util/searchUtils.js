@@ -13,7 +13,7 @@ import { getJson } from './xhrPromise';
 import { distance } from './geo-utils';
 import { uniqByLabel, isStop } from './suggestionUtils';
 import mapPeliasModality from './pelias-to-modality-mapper';
-import { PREFIX_ROUTES } from './path';
+import { PREFIX_ROUTES, PREFIX_STOPS } from './path';
 
 /**
  * LayerType depicts the type of the point-of-interest.
@@ -66,7 +66,7 @@ const mapRoute = item => {
     return null;
   }
 
-  const link = `/${PREFIX_ROUTES}/${item.gtfsId}/pysakit/${
+  const link = `/${PREFIX_ROUTES}/${item.gtfsId}/${PREFIX_STOPS}/${
     orderBy(item.patterns, 'code', ['asc'])[0].code
   }`;
 
@@ -311,9 +311,15 @@ export function getGeocodingResult(
     opts = { ...opts, sources };
   }
 
-  return getJson(config.URL.PELIAS, opts).then(response =>
-    mapPeliasModality(response.features, config),
+  return getJson(`${config.URL.GEOCODING_BASE_URL}/search`, opts).then(
+    response => mapPeliasModality(response.features, config),
   );
+}
+
+export function searchPlace(ids, config) {
+  return getJson(`${config.URL.GEOCODING_BASE_URL}/place`, {
+    ids,
+  });
 }
 
 function getFavouriteRoutes(favourites, input) {
@@ -822,3 +828,7 @@ export const withCurrentTime = (getStore, location) => {
     },
   };
 };
+
+export function reverseGeocode(opts, config) {
+  return getJson(`${config.URL.GEOCODING_BASE_URL}/reverse`, opts);
+}
