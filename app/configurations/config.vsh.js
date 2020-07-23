@@ -323,7 +323,19 @@ export default {
           de: 'https://openbike.ulm.dev',
           en: 'https://openbike.ulm.dev'
         }
-      }
+      },
+      zeus: {
+        icon: 'scooter',
+        name: {
+          de: 'Zeus',
+          en: 'Zeus',
+        },
+        type: 'scooter',
+        url: {
+          de: 'https://de.zeusscooters.com',
+          en: 'https://zeusscooters.com',
+        },
+      },
     }
     
   },
