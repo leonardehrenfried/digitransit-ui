@@ -41,7 +41,8 @@ class DynamicParkingLotsPopup extends React.Component {
     let text;
     if (
       this.props.feature.properties &&
-      typeof this.props.feature.properties.free === 'number'
+      typeof this.props.feature.properties.free === 'number' &&
+      this.props.feature.properties.state !== 'nodata'
     ) {
       text = intl.formatMessage(
         {
